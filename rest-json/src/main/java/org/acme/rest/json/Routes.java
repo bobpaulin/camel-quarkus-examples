@@ -63,6 +63,13 @@ public class Routes extends RouteBuilder {
         from("platform-http:/legumes?httpMethodRestrict=GET")
                 .setBody().constant(legumes)
                 .marshal().json();
-
+        from("netty-http://localhost:8082/stuff?nativeTransport=true")
+                .setBody().constant(legumes)
+                .setHeader("firstName", constant("Bob"))
+                .setHeader("lastName", constant("Paulin"))
+                .setHeader("item", constant("Some Stuff"))
+                .setBody(constant("P.S.  Body works too"))
+                .to("freemarker:file:///home/bpaulin/test.ftl?contentCache=false");
+        //.marshal().json();
     }
 }
